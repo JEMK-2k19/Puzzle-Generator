@@ -69,14 +69,13 @@ class WordGenerator:
             intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
             if "thumbnail" in intm:
                 newbank.append(intm["thumbnail"]["source"])
-                newbank.append(bank[rand])
                 bank.remove(bank[rand])
             else:
                 bank.remove(bank[rand])
                 rand = random.randint(0,len(bank)-1)
                 if len(bank) < 2:
                     return []
-        return newbank
+        return newbank[0]
 
     def wordfilter(self, word, prefix):
         banks = set()
