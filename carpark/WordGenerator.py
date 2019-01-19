@@ -12,6 +12,7 @@ class Puzzle:
         self.word_generator = WordGenerator()
         self.answer = self.word_generator.get_answer()
         self.words = self.word_generator.words
+        self.links = self.word_generator.links
 
     def check_answer(self, answer):
         if answer == self.answer:
@@ -21,10 +22,13 @@ class Puzzle:
 
 class WordGenerator:
     def __init__(self):
-        self.words = []
-        while not self.words:
+        self.links = []
+        while not self.links:
+            self.words = []
+            self.links = []
             self.prefix = self.get_random_prefix()
-            self.words = self.get_links(self.prefix)
+            self.wordlist = self.get_words(self.prefix)
+            self.links = self.get_links(self.prefix, self.wordlist)
 
     def read_csv(self, fname):
         new = []
@@ -52,12 +56,15 @@ class WordGenerator:
             return []
         return self.wordfilter(word, prefix)
 
-    def get_links(self, prefix):
-        bank = self.get_words(prefix)
+    def get_links(self, prefix, bank):
         if len(bank) <= 2:
             return []
-        newbank = [self.find_link(bank), self.find_link(bank)]
-        self.words = newbank
+        link1 = self.find_link(bank)
+        link2 = self.find_link(bank)
+        if not link1 or not link2:
+            return []
+        newbank = [link1, link2]
+        self.links = newbank
         return newbank
 
     def find_link(self, bank):
@@ -69,12 +76,14 @@ class WordGenerator:
             intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
             if "thumbnail" in intm:
                 newbank.append(intm["thumbnail"]["source"])
+                self.words.append(bank[rand])
                 bank.remove(bank[rand])
+                return newbank[0]
             else:
                 bank.remove(bank[rand])
-                rand = random.randint(0,len(bank)-1)
                 if len(bank) < 2:
-                    return []
+                    return False
+                rand = random.randint(0, len(bank) - 1)
         return newbank[0]
 
     def wordfilter(self, word, prefix):

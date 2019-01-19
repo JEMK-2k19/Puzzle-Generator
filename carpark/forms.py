@@ -22,6 +22,7 @@ class AnswerForm(forms.ModelForm):
         if new:
             puzzle = WordGenerator.Puzzle()
         self.puzzle = puzzle
+        self.links = self.puzzle.links
         self.words = self.puzzle.words
         self.answer = self.puzzle.answer
 

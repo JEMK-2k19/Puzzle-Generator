@@ -12,7 +12,16 @@
       <ul class="list-group list-group-flush">
         {% for word in words %}
           <li class="list-group-item">
-            <img src={{ word }} alt="Girl in a jacket">
+            {{ word }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        {% for link in links %}
+          <li class="list-group-item">
+            <img src={{ link }} alt="Unknown image">
           </li>
         {% endfor %}
       </ul>
