@@ -1,7 +1,6 @@
 import csv, io
 import random
 import requests
-import json
 import random
 import time
 threshold = 0.5
@@ -11,7 +10,7 @@ class Puzzle:
     def __init__(self):
         self.word_generator = WordGenerator()
         self.answer = self.word_generator.get_answer()
-        print(self.word_generator.words)
+        self.words = self.word_generator.words
 
     def check_answer(self, answer):
         if answer == self.answer:
@@ -34,7 +33,7 @@ class WordGenerator:
         return new
 
     def get_wordlist(self):
-        data = self.read_csv("ELP Data.csv")
+        data = self.read_csv("carpark/ELP Data.csv")
         data[0][0] = data[0][0][1:]
         data = list(map(lambda x: x[0], data))
         return data
@@ -62,5 +61,3 @@ class WordGenerator:
 
     def get_answer(self):
         return self.prefix
-
-puzzle = Puzzle()
