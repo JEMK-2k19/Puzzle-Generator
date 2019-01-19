@@ -17,3 +17,12 @@ class NewGameForm(models.Model):
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
+
+class Game(models.Model):
+    game_id = models.CharField(max_length=8)
+
+    @classmethod
+    def create(cls, game_id):
+        book = cls(game_id=game_id)
+        # do something with the book
+        return book

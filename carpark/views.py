@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from . import forms
+from . import models
 # Create your views here.
 
 def new_view(request):
@@ -8,10 +9,11 @@ def new_view(request):
 def new_game(request):
     if request.method == "POST":
         form = forms.CreatePerson(request.POST)
+        game = models.Game.create("123")
         if form.is_valid():
             player_name = form.cleaned_data['name']
 
-            return render(request, 'carpark/wait_page.html')
+            return render(request, 'carpark/wait_page.html', {'game_id': game.game_id})
     else:
         form = forms.CreatePerson()
     return render(request, 'carpark/new_game.html', {'form': form})

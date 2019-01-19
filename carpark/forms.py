@@ -25,11 +25,6 @@ class AnswerForm(forms.ModelForm):
         self.words = self.puzzle.words
         self.answer = self.puzzle.answer
 
-class NewGameForm(forms.ModelForm):
-    class Meta:
-        model = models.NewGameForm
-        name = ["name"]
-
 class CreatePerson(forms.ModelForm):
     class Meta:
         model = models.Player
