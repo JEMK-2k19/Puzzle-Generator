@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from . import forms
-from . import carpark_logic
-from datetime import datetime
-
 # Create your views here.
+
+def new_view(request):
+    return render(request, 'carpark/new.html')
+
+def new_game(request):
+    return render(request, 'carpark/new_game.html')
+
+def join_game(request):
+    return render(request, 'carpark/join_game.html')
+
 def quiz(request):
     output = []
     if request.method == "POST":
