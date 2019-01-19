@@ -18,6 +18,9 @@ def carpark_view(request):
         form = forms.RouteForm()
     return render(request, 'carpark/carpark.html', {'form': form, 'output': output})
 
+def new_view(request):
+    return render(request, 'carpark/new.html')
+
 def read_csv(fname):
     new = []
     with open(fname, encoding = 'utf-8') as f:
