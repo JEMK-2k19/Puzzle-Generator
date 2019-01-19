@@ -10,9 +10,6 @@ def getWords(prefix):
     #prefix = input("Enter your prefix\n")
     api = "https://api.datamuse.com/words?sp="+prefix+"*&md=fp"
     word = requests.get(api).json()
-    #print(word)
-    #print(word[0]["tags"])
-    #print(type(word[0]["tags"]))
     bank=[]
     for i in range(len(word)-1):
         #print(word[i])
