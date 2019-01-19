@@ -21,6 +21,13 @@ def carpark_view(request):
 def new_view(request):
     return render(request, 'carpark/new.html')
 
+def new_game(request):
+    print("Hello")
+    return render(request, 'carpark/new_game.html')
+
+def join_game(request):
+    return render(request, 'carpark/join_game.html')
+
 def read_csv(fname):
     new = []
     with open(fname, encoding = 'utf-8') as f:

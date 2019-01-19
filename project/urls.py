@@ -28,7 +28,7 @@ urlpatterns = [
     re_path(r'^articles/', include('articles.urls')), ##links to articles app
     re_path(r'^data/', include('data.urls')),
     re_path(r'^carpark/', include('carpark.urls')),
-    re_path(r'^bootstrap/', views.bootstrap_test)
+    re_path(r'^bootstrap/',  views.bootstrap_test)
 ]
 
 urlpatterns += staticfiles_urlpatterns()
