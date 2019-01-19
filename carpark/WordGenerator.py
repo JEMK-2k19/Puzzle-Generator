@@ -3,7 +3,9 @@ import random
 import requests
 import random
 import time
-threshold = 0.5
+from nltk.stem import WordNetLemmatizer
+wnl = WordNetLemmatizer()
+threshold = 1
 random.seed(time.time())
 
 class Puzzle:
@@ -47,16 +49,31 @@ class WordGenerator:
     def get_words(self, prefix):
         api = "https://api.datamuse.com/words?sp=" + prefix + "*&md=fp"
         word = requests.get(api).json()
-        bank = []
-        for i in range(len(word) - 1):
-            if float(word[i]["tags"][len(word[i]["tags"]) - 1][2:]) > threshold:
-                if word[i]["word"].isalnum():
-                    if word[i]["word"] != prefix:
-                        bank.append(word[i]["word"])
+        banks = set()
+        words = []
+        if len(word) <= 10:
+            return []
+        for i in range(len(word)-1):
+            words.append(word[i]["word"])
+        for i in range(len(word)-1):
+            if float(word[i]["tags"][len(word[i]["tags"])-1][2:])>threshold:
+                if word[i]["word"].isalpha():
+                    if word[i]["word"]!=prefix:
+                        if word[i]["tags"][0]=='n':
+                            if not("prop" in word[i]["tags"]):
+                                if wnl.lemmatize(word[i]["word"]) in words:
+                                    banks.add(wnl.lemmatize(word[i]["word"]))
+                                else:
+                                    banks.add(word[i]["word"])
+        bank = list(banks)
         if bank == [] or len(bank) < 2:
             return []
-        self.word1 = bank[random.randint(0, len(bank))]
-        self.word2 = bank[random.randint(0, len(bank))]
+        rand1 = random.randint(0,len(bank)-1)
+        rand2 = random.randint(0,len(bank)-1)
+        while rand2 == rand1:
+            rand2 = random.randint(0,len(bank)-1)
+        self.word1 = bank[rand1]
+        self.word2 = bank[rand2]
         return [self.word1, self.word2]
 
     def get_answer(self):
