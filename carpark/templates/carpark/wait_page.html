@@ -1,0 +1,21 @@
+{% extends 'base_layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class = "input-data">
+  <h2>Waiting for player</h2>
+  <form class="form-group" action="./" method="post">
+    {% csrf_token %}
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        {% for person in persons %}
+          <li class="list-group-item">{{ person }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

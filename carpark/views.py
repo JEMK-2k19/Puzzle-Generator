@@ -3,6 +3,11 @@ from . import forms
 from . import models
 # Create your views here.
 
+def wait_page(request):
+    #persons = Articles.objects.raw('SELECT * FROM persons')
+    #add persons as the second argument
+    return render(request, 'carpark/wait_page.html')
+
 def new_view(request):
     return render(request, 'carpark/new.html')
 
