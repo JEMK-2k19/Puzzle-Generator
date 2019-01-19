@@ -61,8 +61,8 @@ class WordGenerator:
                     if word[i]["word"]!=prefix:
                         if word[i]["tags"][0]=='n':
                             if not("prop" in word[i]["tags"]):
-                                if stemmer.stem(word[i]["word"]) in words:
-                                    banks.add(stemmer.stem(word[i]["word"]))
+                                if wnl.lemmatize(word[i]["word"]) in words:
+                                    banks.add(wnl.lemmatize(word[i]["word"]))
                                 else:
                                     banks.add(word[i]["word"])
         bank = list(banks)
