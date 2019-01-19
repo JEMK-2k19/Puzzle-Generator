@@ -1,5 +1,4 @@
 import csv, io
-import random
 import requests
 import random
 import time
