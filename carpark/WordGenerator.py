@@ -3,8 +3,8 @@ import random
 import requests
 import random
 import time
-from nltk.stem import SnowballStemmer
-stemmer = SnowballStemmer("english")
+from nltk.stem import WordNetLemmatizer
+wnl = WordNetLemmatizer()
 threshold = 1
 random.seed(time.time())
 
@@ -47,11 +47,11 @@ class WordGenerator:
         return prefix
 
     def get_words(self, prefix):
-        api = "https://api.datamuse.com/words?sp=" + prefix + "*&md=fpd"
+        api = "https://api.datamuse.com/words?sp=" + prefix + "*&md=fp"
         word = requests.get(api).json()
         banks = set()
         words = []
-        if len(word) <= 20:
+        if len(word) <= 10:
             return []
         for i in range(len(word)-1):
             words.append(word[i]["word"])
@@ -60,10 +60,11 @@ class WordGenerator:
                 if word[i]["word"].isalpha():
                     if word[i]["word"]!=prefix:
                         if word[i]["tags"][0]=='n':
-                            if stemmer.stem(word[i]["word"]) in words:
-                                banks.add(stemmer.stem(word[i]["word"]))
-                            else:
-                                banks.add(word[i]["word"])
+                            if not("prop" in word[i]["tags"]):
+                                if stemmer.stem(word[i]["word"]) in words:
+                                    banks.add(stemmer.stem(word[i]["word"]))
+                                else:
+                                    banks.add(word[i]["word"])
         bank = list(banks)
         if bank == [] or len(bank) < 2:
             return []
