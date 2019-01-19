@@ -19,6 +19,7 @@
       <div class="col-sm-12">
         <!--<input class="form-control" type="text" placeholder="Enter your location">-->
         {{ form.answer|as_crispy_field }}
+        <input type="hidden" name="param1" value="{{form.answer}}"/>
       </div>
       <div class="col-sm-2">
         <a href="/quiz.html">

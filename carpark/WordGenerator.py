@@ -55,8 +55,8 @@ class WordGenerator:
                         bank.append(word[i]["word"])
         if bank == [] or len(bank) < 2:
             return []
-        self.word1 = bank[random.randint(0, len(bank))]
-        self.word2 = bank[random.randint(0, len(bank))]
+        self.word1 = bank[random.randint(0, len(bank)-1)]
+        self.word2 = bank[random.randint(0, len(bank)-1)]
         return [self.word1, self.word2]
 
     def get_answer(self):

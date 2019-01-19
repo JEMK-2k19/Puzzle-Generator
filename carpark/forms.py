@@ -7,15 +7,21 @@ class RouteForm(forms.ModelForm):
         model = models.Route
         fields = ["start", "destination"]
 
+puzzle = WordGenerator.Puzzle()
+
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = models.Question
         fields = ["answer"]
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, new, *args, **kwargs):
         super(AnswerForm, self).__init__(*args, **kwargs)
 
         # set the user_id as an attribute of the form
-        self.puzzle = WordGenerator.Puzzle()
+        global puzzle
+        if new:
+            puzzle = WordGenerator.Puzzle()
+        self.puzzle = puzzle
         self.words = self.puzzle.words
         self.answer = self.puzzle.answer
+
