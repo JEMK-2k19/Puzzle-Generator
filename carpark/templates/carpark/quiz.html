@@ -11,7 +11,9 @@
     <div class="card">
       <ul class="list-group list-group-flush">
         {% for word in words %}
-          <li class="list-group-item">{{ word }}</li>
+          <li class="list-group-item">
+            <img src={{ word }} alt="Girl in a jacket">
+          </li>
         {% endfor %}
       </ul>
     </div>
