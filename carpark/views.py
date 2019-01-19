@@ -2,10 +2,9 @@ from django.shortcuts import render
 from . import forms
 from . import carpark_logic
 from datetime import datetime
-from . import models
 
 # Create your views here.
-
+'''
 def carpark_view(request):
     output = []
     if request.method == "POST":
@@ -18,17 +17,21 @@ def carpark_view(request):
     else:
         form = forms.RouteForm()
     return render(request, 'carpark/carpark.html', {'form': form, 'output': output})
+'''
 
 def quiz(request):
     output = []
     if request.method == "POST":
         form = forms.AnswerForm(request.POST)
+        words = form.words
         if form.is_valid():
             source = form.cleaned_data['answer']
-            if source == models.Question.answer:
-                output = ["bla"]
+            if source == form.answer:
+                form = forms.AnswerForm(request.POST)
+                output = ["correct"]
             else:
-                output = []
+                output = ["Wrong answer"]
     else:
         form = forms.AnswerForm()
-    return render(request, 'carpark/quiz.html', {'form': form, 'output': output})
+        words = form.words
+    return render(request, 'carpark/quiz.html', {'form': form, 'words': words, 'output': output})

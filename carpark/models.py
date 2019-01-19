@@ -5,13 +5,10 @@ class Carpark(models.Model):
     body = models.TextField()
     date = models.DateTimeField()
 
-
 class Route(models.Model):
     start = models.CharField(max_length=100)
     destination = models.CharField(max_length=100)
 
-
 class Question(models.Model):
-    question = models.CharField(max_length=100)
     answer = models.CharField(max_length=100)
 
