@@ -1,10 +1,24 @@
 {% extends 'base_layout.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
 <div class = "input-data">
-  <h2>Find Cheap Parking!</h2>
+  <h2>Enter Thy Name!</h2>
+  <form class="form-group" action="./" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-12">
+        {{ form.name|as_crispy_field }}
+      </div>
+      <div class="col-sm-2">
+        <a href="/new_game.html">
+          <button type="submit" class="btn btn-primary mb-2">Submit!</button>
+        </a>
+      </div>
+    </div>
+  </form>
 </div>
-
 
 {% endblock %}
