@@ -4,7 +4,7 @@ from . import carpark_logic
 from datetime import datetime
 
 # Create your views here.
-
+'''
 def carpark_view(request):
     output = []
     if request.method == "POST":
@@ -17,6 +17,7 @@ def carpark_view(request):
     else:
         form = forms.RouteForm()
     return render(request, 'carpark/carpark.html', {'form': form, 'output': output})
+'''
 
 def new_view(request):
     return render(request, 'carpark/new.html')
@@ -34,3 +35,20 @@ def read_csv(fname):
         for row in csv.reader(f):
             new.append(row)
     return new
+
+def quiz(request):
+    output = []
+    if request.method == "POST":
+        form = forms.AnswerForm(request.POST)
+        words = form.words
+        if form.is_valid():
+            source = form.cleaned_data['answer']
+            if source == form.answer:
+                form = forms.AnswerForm(request.POST)
+                output = ["correct"]
+            else:
+                output = ["Wrong answer"]
+    else:
+        form = forms.AnswerForm()
+        words = form.words
+    return render(request, 'carpark/quiz.html', {'form': form, 'words': words, 'output': output})

@@ -1,0 +1,39 @@
+{% extends 'base_layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class = "input-data">
+  <h2>Guess the prefix!</h2>
+  <form class="form-group" action="./" method="post">
+    {% csrf_token %}
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        {% for word in words %}
+          <li class="list-group-item">{{ word }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <!--<input class="form-control" type="text" placeholder="Enter your location">-->
+        {{ form.answer|as_crispy_field }}
+      </div>
+      <div class="col-sm-2">
+        <a href="/quiz.html">
+          <button type="submit" class="btn btn-primary mb-2">Submit!</button>
+        </a>
+      </div>
+    </div>
+  </form>
+  <div class="card">
+    <ul class="list-group list-group-flush">
+      {% for answer in output %}
+        <li class="list-group-item">{{ answer }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% endblock %}
