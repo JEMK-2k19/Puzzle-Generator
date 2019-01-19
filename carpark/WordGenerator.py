@@ -24,7 +24,7 @@ class WordGenerator:
         self.words = []
         while not self.words:
             self.prefix = self.get_random_prefix()
-            self.words = self.get_words(self.prefix)
+            self.words = self.get_links(self.prefix)
 
     def read_csv(self, fname):
         new = []
@@ -50,48 +50,43 @@ class WordGenerator:
         word = requests.get(api).json()
         if len(word) <= 10:
             return []
-        return wordfilter(word)
+        return self.wordfilter(word, prefix)
 
-    def get_links(self,prefix):
-        bank = get_words(self,prefix)
-        if len(bank)<=2:
+    def get_links(self, prefix):
+        bank = self.get_words(prefix)
+        if len(bank) <= 2:
             return []
+        newbank = [self.find_link(bank), self.find_link(bank)]
+        self.words = newbank
+        return newbank
+
+    def find_link(self, bank):
         newbank = []
-        rand1 = random.randint(0,len(bank)-1)
-        while len(newbank)==0:
-            api = "http://en.wikipedia.org/w/api.php?action=query&titles="+ bank[rand1] + "&prop=pageimages&format=json&pithumbsize=1000"
+        rand = random.randint(0, len(bank)-1)
+        while len(newbank) == 0:
+            api = "http://en.wikipedia.org/w/api.php?action=query&titles=" + bank[rand] + "&prop=pageimages&format=json&pithumbsize=1000"
             mono = requests.get(api).json()
             intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
             if "thumbnail" in intm:
                 newbank.append(intm["thumbnail"]["source"])
+                newbank.append(bank[rand])
+                bank.remove(bank[rand])
             else:
-                bank.remove(bank[rand1])
-                rand1 = random.randint(0,len(bank)-1)
-                if len(bank)<2:
-                    return []
-        rand2 = random.randint(0,len(bank)-1)
-        while len(newbank)==1:
-            api = "http://en.wikipedia.org/w/api.php?action=query&titles="+ bank[rand2] + "&prop=pageimages&format=json&pithumbsize=1000"
-            mono = requests.get(api).json()
-            intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
-            if "thumbnail" in intm:
-                newbank.append(intm["thumbnail"]["source"])
-            else:
-                bank.remove(bank[rand2])
-                rand2 = random.randint(0,len(bank)-1)
-                if len(bank)<2:
+                bank.remove(bank[rand])
+                rand = random.randint(0,len(bank)-1)
+                if len(bank) < 2:
                     return []
         return newbank
 
-    def wordfilter(word):
+    def wordfilter(self, word, prefix):
         banks = set()
         words = []
-        for i in rangelen(word):
+        for i in self.rangelen(word):
             words.append(word[i]["word"])
-        for i in rangelen(word):
+        for i in self.rangelen(word):
             if float(word[i]["tags"][len(word[i]["tags"])-1][2:])>threshold:
                 if word[i]["word"].isalpha():
-                    if word[i]["word"]!=prefix:
+                    if word[i]["word"] != prefix:
                         if word[i]["tags"][0]=='n':
                             if not("prop" in word[i]["tags"]):
                                 if wnl.lemmatize(word[i]["word"]) in words:
@@ -100,7 +95,7 @@ class WordGenerator:
                                     banks.add(word[i]["word"])
         return list(banks)
         
-    def rangelen(list):
+    def rangelen(self, list):
         return range(len(list)-1)
     
     def get_answer(self):
