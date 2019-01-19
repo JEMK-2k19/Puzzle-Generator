@@ -1,0 +1,74 @@
+{% extends 'base_layout.html' %}
+
+{% load static %}
+{% block content %}
+
+  <script type="text/javascript">
+    let counter = 0;
+    function count() {
+      counter++;
+      document.querySelector('#counter').innerHTML = counter;
+      /**
+      if (counter % 10 === 0) {
+        data = "{{data|safe}}";
+        var json = JSON.parse(data);
+        document.querySelector('#counter').innerHTML = data.try;
+        document.querySelector('#counter').innerHTML = {{ form }};
+      }
+      */
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.color-change').forEach(function(button) {
+        button.onclick = () => {
+          document.querySelector('#counter').style.color = button.dataset.color;
+        }
+      });
+      document.querySelector('#color-change').onchange = function() {
+          document.querySelector('#counter').style.color = this.value;
+      };
+
+      document.querySelector('#task').onkeyup = () => {
+        if (document.querySelector('#task').value.lenth > 0) {
+          document.querySelector('#submit').disabled = false;
+        } else {
+          document.querySelector('#submit').disabled = true;
+        }
+      }
+
+      document.querySelector("#new-task").onsubmit = () => {
+        const li = document.createElement('li');
+        li.innerHTML = document.querySelector('#task').value;
+
+        document.querySelector('#tasks').append(li);
+        document.querySelector('#task').value = '';
+        return false;
+      }
+    });
+  </script>
+
+  <form id='form'>
+    <input id = "currency" type="text">
+    <input type = "submit" value="Get ExRate">
+  </form>
+
+  <h1 id = 'counter'>0</h1>
+  <button onclick = "count()"> Click me </button>
+  <button id = "green" class = "color-change" data-color = "green"> Green </button>
+  <button id = "blue" class = "color-change" data-color = "blue"> Blue </button>
+  <button id = "red" class = "color-change" data-color = "red"> Red </button>
+
+  <select id = "color-change">
+    <option value="red">Red</option>
+    <option value="blue">Blue</option>
+    <option value="black">Black</option>
+    <option value="green">Green</option>
+  </select>
+
+  <ul id = "tasks">
+  </ul>
+  <form id = "new-task">
+    <input id = "task" type="text" placeholder = "New Task">
+    <input type = "submit">
+  </form>
+
+{% endblock %}

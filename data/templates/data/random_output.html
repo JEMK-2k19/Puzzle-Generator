@@ -1,0 +1,12 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+
+<div class = "random-output">
+  <h3> {% for i in data %}
+    <li> {{ i }} </li>
+    {% endfor %}
+  </h3>
+</div>
+
+{% endblock %}

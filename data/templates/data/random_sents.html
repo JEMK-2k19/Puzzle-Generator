@@ -1,0 +1,14 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+
+<div class = "input-data">
+  <h2> Input words </h2>
+  <form class="site-form" action="{% url 'data:random_output' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+{% endblock %}

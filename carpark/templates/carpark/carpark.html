@@ -1,0 +1,34 @@
+{% extends 'base_layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class = "input-data">
+  <h2>Find Cheap Parking!</h2>
+  <form class="form-group" action="./" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-12">
+        <!--<input class="form-control" type="text" placeholder="Enter your location">-->
+        {{ form.start|as_crispy_field }}
+      </div>
+      <div class="col-sm-12">
+        <!--<input class="form-control" type="text" placeholder="Enter your destination">-->
+        {{ form.destination|as_crispy_field }}
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary mb-2">Route Me!</button>
+      </div>
+    </div>
+  </form>
+  <div class="card">
+    <ul class="list-group list-group-flush">
+      {% for location in output %}
+        <li class="list-group-item">{{ location }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

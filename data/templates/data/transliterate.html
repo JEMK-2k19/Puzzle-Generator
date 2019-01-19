@@ -1,0 +1,14 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+
+<div class = "input-data">
+  <h2> Input text </h2>
+  <form class="site-form" action="{% url 'data:transliterate_output' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+{% endblock %}
