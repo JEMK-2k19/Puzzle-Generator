@@ -49,13 +49,47 @@ class WordGenerator:
     def get_words(self, prefix):
         api = "https://api.datamuse.com/words?sp=" + prefix + "*&md=fp"
         word = requests.get(api).json()
-        banks = set()
-        words = []
         if len(word) <= 10:
             return []
-        for i in range(len(word)-1):
+        return wordfilter(word)
+
+    def get_links(self,prefix):
+        bank = get_words(self,prefix)
+        if len(bank)<=2:
+            return []
+        newbank = []
+        rand1 = random.randint(0,len(bank)-1)
+        while len(newbank)==0:
+            api = "http://en.wikipedia.org/w/api.php?action=query&titles="+ bank[rand1] + "&prop=pageimages&format=json&pithumbsize=1000"
+            mono = requests.get(api).json()
+            intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
+            if "thumbnail" in intm:
+                newbank.append(intm["thumbnail"]["source"])
+            else:
+                bank.remove(bank[rand1])
+                rand1 = random.randint(0,len(bank)-1)
+                if len(bank)<2:
+                    return []
+        rand2 = random.randint(0,len(bank)-1)
+        while len(newbank)==1:
+            api = "http://en.wikipedia.org/w/api.php?action=query&titles="+ bank[rand2] + "&prop=pageimages&format=json&pithumbsize=1000"
+            mono = requests.get(api).json()
+            intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
+            if "thumbnail" in intm:
+                newbank.append(intm["thumbnail"]["source"])
+            else:
+                bank.remove(bank[rand2])
+                rand2 = random.randint(0,len(bank)-1)
+                if len(bank)<2:
+                    return []
+        return newbank
+
+    def wordfilter(word):
+        banks = set()
+        words = []
+        for i in rangelen(word):
             words.append(word[i]["word"])
-        for i in range(len(word)-1):
+        for i in rangelen(word):
             if float(word[i]["tags"][len(word[i]["tags"])-1][2:])>threshold:
                 if word[i]["word"].isalpha():
                     if word[i]["word"]!=prefix:
@@ -65,16 +99,10 @@ class WordGenerator:
                                     banks.add(wnl.lemmatize(word[i]["word"]))
                                 else:
                                     banks.add(word[i]["word"])
-        bank = list(banks)
-        if bank == [] or len(bank) < 2:
-            return []
-        rand1 = random.randint(0,len(bank)-1)
-        rand2 = random.randint(0,len(bank)-1)
-        while rand2 == rand1:
-            rand2 = random.randint(0,len(bank)-1)
-        self.word1 = bank[rand1]
-        self.word2 = bank[rand2]
-        return [self.word1, self.word2]
-
+        return list(banks)
+        
+    def rangelen(list):
+        return range(len(list)-1)
+    
     def get_answer(self):
         return self.prefix
