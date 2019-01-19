@@ -14,3 +14,6 @@ class Question(models.Model):
 
 class NewGameForm(models.Model):
     name = models.CharField(max_length=100)
+
+class Player(models.Model):
+    name = models.CharField(max_length=100)
