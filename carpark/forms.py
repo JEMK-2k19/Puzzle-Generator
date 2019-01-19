@@ -25,6 +25,13 @@ class AnswerForm(forms.ModelForm):
         self.words = self.puzzle.words
         self.answer = self.puzzle.answer
 
+class createJoinGameForm(forms.ModelForm):
+    class Meta:
+        model = models.joinGameForm
+        fields = ["name", "access_code"]
+
+
+
 class CreatePerson(forms.ModelForm):
     class Meta:
         model = models.Player

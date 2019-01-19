@@ -19,7 +19,16 @@ def new_game(request):
     return render(request, 'carpark/new_game.html', {'form': form})
 
 def join_game(request):
-    return render(request, 'carpark/join_game.html')
+    if request.method == "POST":
+        form = forms.createJoinGameForm(request.POST)
+        if form.is_valid():
+            player_name = form.cleaned_data['name']
+            access_code = form.cleaned_data['access_code']
+
+            return render(request, 'carpark/wait_page.html')
+    else:
+        form = forms.createJoinGameForm()
+    return render(request, 'carpark/join_game.html', {'form': form})
 
 def quiz(request):
     output = []
