@@ -19,3 +19,16 @@ class AnswerForm(forms.ModelForm):
         self.puzzle = WordGenerator.Puzzle()
         self.words = self.puzzle.words
         self.answer = self.puzzle.answer
+
+class NewGameForm(forms.ModelForm):
+    class Meta:
+        model = models.NewGameForm
+        name = ["name"]
+
+    def __init__(self, *args, **kwargs):
+        super(NewGameForm, self).__init__(*args, **kwargs)
+
+        # set the user_id as an attribute of the form
+        self.puzzle = WordGenerator.Puzzle()
+        self.words = self.puzzle.words
+        self.answer = self.puzzle.answer

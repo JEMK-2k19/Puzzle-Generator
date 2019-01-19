@@ -12,3 +12,5 @@ class Route(models.Model):
 class Question(models.Model):
     answer = models.CharField(max_length=100)
 
+class NewGameForm(models.Model):
+    name = models.CharField(max_length=100)

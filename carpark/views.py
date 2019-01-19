@@ -23,8 +23,20 @@ def new_view(request):
     return render(request, 'carpark/new.html')
 
 def new_game(request):
-    print("Hello")
-    return render(request, 'carpark/new_game.html')
+    if request.method == "POST":
+        form = forms.NewGameForm(request.POST)
+        words = form.words
+        if form.is_valid():
+            source = form.cleaned_data['answer']
+            if source == form.answer:
+                form = forms.AnswerForm(request.POST)
+                output = ["correct"]
+            else:
+                output = ["Wrong answer"]
+    else:
+        form = forms.AnswerForm()
+        words = form.words
+    return render(request, 'carpark/new_game.html', {'form': form, 'words': words})
 
 def join_game(request):
     return render(request, 'carpark/join_game.html')
