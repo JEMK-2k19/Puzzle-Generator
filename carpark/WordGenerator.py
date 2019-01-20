@@ -63,7 +63,7 @@ class WordGenerator:
         link2 = self.find_link(bank, link1[1])
         while link2[0] == link1[0]:
             link2 = self.find_link(bank, link1[1])
-        if link2[0] = "":
+        if link2[0] == "":
             return []
         newbank = [link1[0], link2[0]]
         self.links = newbank
@@ -76,7 +76,7 @@ class WordGenerator:
             api = "http://en.wikipedia.org/w/api.php?action=query&titles=" + bank[rand] + "&prop=pageimages&format=json&pithumbsize=500"
             mono = requests.get(api).json()
             intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
-            sim = similar(bank[rand])
+            sim = self.similar(bank[rand])
             if "thumbnail" in intm and not othlink in sim:
                 newbank.append(intm["thumbnail"]["source"])
                 newbank.append(bank[rand])
@@ -89,11 +89,11 @@ class WordGenerator:
                     return ["",""]
                 rand = random.randint(0, len(bank) - 1)
     
-    def similar(word):
+    def similar(self, word):
         api = "https://api.datamuse.com/words?ml=" + word + "&max=5"
         mono = requests.get(api).json()
         bank = []
-        for i in rangelen(mono):
+        for i in self.rangelen(mono):
             bank.append(mono[i]["word"])
         return bank
     
