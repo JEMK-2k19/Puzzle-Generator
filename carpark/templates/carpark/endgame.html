@@ -1,0 +1,18 @@
+{% extends 'base_layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class = "input-data">
+  <h2>End of game!</h2>
+  <form class="form-group" action="./" method="post">
+    {% csrf_token %}
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        <h4>Your points: {{points}}</h4>
+      </ul>
+    </div>
+</div>
+
+{% endblock %}

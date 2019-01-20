@@ -10,11 +10,7 @@
     {% csrf_token %}
     <div class="card">
       <ul class="list-group list-group-flush">
-        {% for word in words %}
-          <li class="list-group-item">
-            {{ word }}
-          </li>
-        {% endfor %}
+        <h4>Your points: {{points}}</h4>
       </ul>
     </div>
     <div class="card">
@@ -35,9 +31,14 @@
         <a href="/quiz.html">
           <button type="submit" class="btn btn-primary mb-2">Submit!</button>
         </a>
-
       </div>
     </div>
+  </form>
+  <form>
+    {% csrf_token %}
+    <a href="give_up">
+      <button type='submit' class="btn btn-primary mb-2"> Give Up! </button>
+    </a>
   </form>
   <div class="card">
     <ul class="list-group list-group-flush">

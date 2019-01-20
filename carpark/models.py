@@ -28,11 +28,14 @@ class Game(models.Model):
         # do something with the book
         return book
 
-
 class CurrentRound(models.Model):
     word1 = models.CharField(max_length=100)
     word2 = models.CharField(max_length=100)
+    link1 = models.CharField(max_length=1000)
+    link2 = models.CharField(max_length=1000)
     points = models.IntegerField()
+    answer = models.CharField(max_length=100)
+    question_no = models.IntegerField()
     id = models.IntegerField(primary_key=True)
 
     #@classmethod
