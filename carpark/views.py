@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from . import forms
-from . import models
+from .models import CurrentRound, Game
 # Create your views here.
 
 def new_view(request):
@@ -9,7 +9,7 @@ def new_view(request):
 def new_game(request):
     if request.method == "POST":
         form = forms.CreatePerson(request.POST)
-        game = models.Game.create("123")
+        game = Game.create("123")
         if form.is_valid():
             player_name = form.cleaned_data['name']
 
@@ -31,25 +31,32 @@ def join_game(request):
     return render(request, 'carpark/join_game.html', {'form': form})
 
 def quiz(request):
+    if request.method != "POST":
+        return init_quiz(request)
     output = []
-    if request.method == "POST":
-        form = forms.AnswerForm(False, request.POST)
-        links = form.links
-        words = form.words
-        answer = form.answer
-        if form.is_valid():
-            source = form.cleaned_data['answer']
-            if source == answer:
-                form = forms.AnswerForm(True)
-                links = form.links
-                output = []
-            else:
-                form = forms.AnswerForm(False)
-                links = form.links
-                words = []
-                output = ["Wrong answer"]
-    else:
-        form = forms.AnswerForm(False)
-        links = form.links
-        words = []
+    form = forms.AnswerForm(False, request.POST)
+    links = form.links
+    words = [CurrentRound.objects.get(id=1).word1, CurrentRound.objects.get(id=1).word1]
+    answer = form.answer
+    if form.is_valid():
+        source = form.cleaned_data['answer']
+        if source == answer:
+            form = forms.AnswerForm(True)
+            links = form.links
+            output = []
+        else:
+            form = forms.AnswerForm(False)
+            links = form.links
+            words = []
+            output = ["Wrong answer"]
     return render(request, 'carpark/quiz.html', {'form': form, 'links': links, 'words': words, 'output': output})
+
+def init_quiz(request):
+    output = []
+    form = forms.AnswerForm(False)
+    links = form.links
+    words = []
+    round = CurrentRound(word1=form.words[0], word2=form.words[1], points=0)
+    round.save()
+    return render(request, 'carpark/quiz.html', {'form': form, 'links': links, 'words': words, 'output': output})
+

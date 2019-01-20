@@ -31,8 +31,6 @@ class createJoinGameForm(forms.ModelForm):
         model = models.joinGameForm
         fields = ["name", "access_code"]
 
-
-
 class CreatePerson(forms.ModelForm):
     class Meta:
         model = models.Player

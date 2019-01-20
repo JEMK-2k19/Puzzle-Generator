@@ -27,3 +27,28 @@ class Game(models.Model):
         book = cls(game_id=game_id)
         # do something with the book
         return book
+
+
+class CurrentRound(models.Model):
+    word1 = models.CharField(max_length=100)
+    word2 = models.CharField(max_length=100)
+    points = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
+
+    #@classmethod
+    #def create(cls, word1, word2):
+    #    round = cls(prev_word1 = word1, prev_word2 = word2, points=0)
+    #    # do something with the book
+    #   return round
+
+    def change_words(self, word1, word2):
+        self.prev_word1 = word1
+        self.prev_word2 = word2
+        # do something with the book
+        return self
+
+    def add_points(self, points):
+        self.points = self.points + points
+        # do something with the book
+        return self
+
