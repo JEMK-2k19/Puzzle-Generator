@@ -61,7 +61,9 @@ class WordGenerator:
             return []
         link1 = self.find_link(bank)
         link2 = self.find_link(bank)
-        if not link1 or not link2:
+        while link2 == link1:
+            link2 = self.find_link(bank)
+        if not link2:
             return []
         newbank = [link1, link2]
         self.links = newbank
