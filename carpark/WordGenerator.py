@@ -59,33 +59,44 @@ class WordGenerator:
     def get_links(self, prefix, bank):
         if len(bank) <= 2:
             return []
-        link1 = self.find_link(bank)
-        link2 = self.find_link(bank)
-        if not link1 or not link2:
+        link1 = self.find_link(bank, "")
+        link2 = self.find_link(bank, link1[1])
+        while link2[0] == link1[0]:
+            link2 = self.find_link(bank, link1[1])
+        if link2[0] == "":
             return []
-        newbank = [link1, link2]
+        newbank = [link1[0], link2[0]]
         self.links = newbank
         return newbank
 
-    def find_link(self, bank):
+    def find_link(self, bank, othlink):
         newbank = []
         rand = random.randint(0, len(bank)-1)
         while len(newbank) == 0:
-            api = "http://en.wikipedia.org/w/api.php?action=query&titles=" + bank[rand] + "&prop=pageimages&format=json&pithumbsize=1000"
+            api = "http://en.wikipedia.org/w/api.php?action=query&titles=" + bank[rand] + "&prop=pageimages&format=json&pithumbsize=500"
             mono = requests.get(api).json()
             intm = mono["query"]["pages"][list(mono["query"]["pages"])[0]]
-            if "thumbnail" in intm:
+            sim = self.similar(bank[rand])
+            if "thumbnail" in intm and not othlink in sim:
                 newbank.append(intm["thumbnail"]["source"])
+                newbank.append(bank[rand])
                 self.words.append(bank[rand])
                 bank.remove(bank[rand])
-                return newbank[0]
+                return newbank
             else:
                 bank.remove(bank[rand])
                 if len(bank) < 2:
-                    return False
+                    return ["",""]
                 rand = random.randint(0, len(bank) - 1)
-        return newbank[0]
-
+    
+    def similar(self, word):
+        api = "https://api.datamuse.com/words?ml=" + word + "&max=5"
+        mono = requests.get(api).json()
+        bank = []
+        for i in self.rangelen(mono):
+            bank.append(mono[i]["word"])
+        return bank
+    
     def wordfilter(self, word, prefix):
         banks = set()
         words = []
